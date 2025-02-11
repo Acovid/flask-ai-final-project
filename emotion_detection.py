@@ -1,4 +1,6 @@
+
 import requests # Import the requests library to handle HTTP requests
+import json
 
 # Function takes a string input that should be analysed
 def emotion_detector(text_to_analyze):
@@ -14,6 +16,13 @@ def emotion_detector(text_to_analyze):
     
     # Send a POST request to the API with the text and headers
     response = requests.post(url, json = myobj, headers=headers)
-    
-    # Return the response text from the API
-    return response.text
+
+    # Parsing the JSON response from the API
+    formatted_response = json.loads(response.text)
+
+     # Extracting sentiment label and score from the response
+    label = formatted_response['documentSentiment']['label']
+    score = formatted_response['documentSentiment']['score']
+   
+    # Returning a dictionary containing sentiment analysis results
+    return {'label': label, 'score': score}
