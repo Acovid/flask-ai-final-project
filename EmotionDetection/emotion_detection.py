@@ -1,4 +1,3 @@
-
 import requests # Import the requests library to handle HTTP requests
 import json
 
@@ -19,10 +18,16 @@ def emotion_detector(text_to_analyze):
 
     # Parsing the JSON response from the API
     formatted_response = json.loads(response.text)
+    joy_score = formatted_response['emotionPredictions'][0]['emotion']['joy']
+    anger_score = formatted_response['emotionPredictions'][0]['emotion']['anger']
+    fear_score = formatted_response['emotionPredictions'][0]['emotion']['fear']
+    disgust_score = formatted_response['emotionPredictions'][0]['emotion']['disgust']
+    sadness_score = formatted_response['emotionPredictions'][0]['emotion']['sadness']
+    emotions_with_scores = {'anger': anger_score,'disgust': disgust_score,'fear': fear_score,'joy': joy_score,'sadness': sadness_score}
 
-     # Extracting sentiment label and score from the response
-    label = formatted_response['documentSentiment']['label']
-    score = formatted_response['documentSentiment']['score']
+    # Find the key with the highest value
+    max_key = max(emotions_with_scores, key=emotions_with_scores.get)
+    # Add 'dominant_emotion' to the dictionary
+    emotions_with_scores['dominant_emotion'] = max_key
    
-    # Returning a dictionary containing sentiment analysis results
-    return {'label': label, 'score': score}
+    return   emotions_with_scores    
