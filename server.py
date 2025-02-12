@@ -16,7 +16,10 @@ def sent_analyzer():
     response = emotion_detector(text_to_analyze)
 
     # Return a dictionary with emotions
-    return response
+    if response["dominant_emotion"] == None:
+        return "Invalid text! Please try again!"
+    else:
+        return response
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5001)
